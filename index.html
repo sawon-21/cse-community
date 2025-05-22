@@ -1343,12 +1343,7 @@
             const reactionCounts = post.reactions || { sad: 0, dislike: 0, celebrate: 0, support: 0, insightful: 0 };
             const totalReactions = Object.values(reactionCounts).reduce((a, b) => a + b, 0);
             const reactedIcons = [];
-            if (reactionCounts.sad > 0) reactedIcons.push('<span>😢</span>');
-            if (reactionCounts.dislike > 0) reactedIcons.push('<span>👎</span>');
-            if (reactionCounts.celebrate > 0) reactedIcons.push('<span>🎉</span>');
-            if (reactionCounts.support > 0) reactedIcons.push('<span>🤝</span>');
-            if (reactionCounts.insightful > 0) reactedIcons.push('<span>💡</span>');
-
+           
             const urlRegex = /(https?:\/\/[^\s]+)/g;
             const formattedContent = post.content.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
 
@@ -1375,13 +1370,7 @@
                                 <span class="reaction-icons">${reactedIcons.join(' ')}</span>
                                 <span class="reaction-count">${totalReactions > 0 ? `(${totalReactions})` : ''}</span>
                             </span>
-                            <div class="reaction-menu" id="reactionMenu-${post.id}">
-                                <span title="Sad" data-reaction="sad">😢</span>
-                                <span title="Dislike" data-reaction="dislike">👎</span>
-                                <span title="Celebrate" data-reaction="celebrate">🎉</span>
-                                <span title="Support" data-reaction="support">🤝</span>
-                                <span title="Insightful" data-reaction="insightful">💡</span>
-                            </div>
+                           
                             <span class="comment-btn"><i class="bi bi-chat"></i> <span class="comment-count">${commentCount}</span></span>
                             <span class="report-btn"><i class="bi bi-flag"></i></span>
                             <span class="share-btn"><i class="bi bi-share"></i></span>
@@ -1470,17 +1459,7 @@
             }
         }
 
-        // Get Reaction Emoji
-        function getReactionEmoji(reaction) {
-            switch (reaction) {
-                case 'sad': return '😢';
-                case 'dislike': return '👎';
-                case 'celebrate': return '🎉';
-                case 'support': return '🤝';
-                case 'insightful': return '💡';
-                default: return '';
-            }
-        }
+      
 
         // Attach Event Listeners to Post
         function attachPostEventListeners(post) {
