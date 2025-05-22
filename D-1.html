@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Social Community App</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #121212;
+            color: #e0e0e0;
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+        }
+        /* Dark Luxury Theme */
+        .gold-text {
+            color: #D4AF37;
+        }
+        .silver-text {
+            color: #C0C0C0;
+        }
+        .navbar {
+            background: #1E1E1E;
+            padding: 15px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #D4AF37;
+        }
+        .navbar h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: #D4AF37;
+        }
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .nav-tabs .nav-link {
+            color: #C0C0C0;
+            background: #2D2D2D;
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            position: relative;
+        }
+        .nav-tabs .nav-link:hover {
+            background: #3D3D3D;
+            color: #D4AF37;
+        }
+        .nav-tabs .nav-link.active {
+            background: #D4AF37;
+            color: #121212;
+            font-weight: 600;
+        }
+        .nav-tabs .nav-link .unseen-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #C0C0C0;
+            color: #121212;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.8rem;
+        }
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2D2D2D;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #D4AF37;
+            cursor: pointer;
+            transition: transform 0.5s ease;
+            border: 1px solid #D4AF37;
+        }
+        .profile-icon:hover { transform: rotate(360deg); }
+        .search-bar {
+            position: relative;
+            width: 100%;
+            max-width: 350px;
+            margin: 15px auto;
+        }
+        .search-bar input {
+            background: #2D2D2D;
+            border: 1px solid #D4AF37;
+            border-radius: 25px;
+            padding: 10px 45px 10px 20px;
+            color: #e0e0e0;
+            font-size: 1rem;
+            width: 100%;
+        }
+        .search-bar input:focus {
+            outline: none;
+            border-color: #C0C0C0;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            background: #3D3D3D;
+        }
+        .search-bar i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #D4AF37;
+            font-size: 1.2rem;
+        }
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: #2D2D2D;
+            border-radius: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            border: 1px solid #D4AF37;
+        }
+        .search-result-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #3D3D3D;
+            cursor: pointer;
+            color: #e0e0e0;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+        .search-result-item:hover {
+            background: #3D3D3D;
+            color: #D4AF37;
+        }
+        .search-result-item span {
+            color: #D4AF37;
+            font-weight: 500;
+        }
+        .post {
+            background: #1E1E1E;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            border: 1px solid #2D2D2D;
+        }
+        .post:hover {
+            border-color: #D4AF37;
+        }
+        .user-initial {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 15px;
+            background: #2D2D2D;
+            color: #D4AF37;
+            border: 1px solid #D4AF37;
+        }
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+            border: 1px solid #D4AF37;
+        }
+        .username {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #D4AF37;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .time-ago {
+            display: block;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        .post-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #e0e0e0;
+            margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+        }
+        .post-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #e0e0e0;
+            margin-bottom: 15px;
+        }
+        .post-content a {
+            color: #D4AF37;
+            text-decoration: underline;
+            word-break: break-all;
+        }
+        .post-image {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 10px;
+            margin: 10px 0;
+            cursor: pointer;
+            border: 1px solid #2D2D2D;
+        }
+        .post-image:hover {
+            border-color: #D4AF37;
+        }
+        .post-type {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #2D2D2D;
+            color: #D4AF37;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            border: 1px solid #D4AF37;
+        }
+        .post-actions {
+            display: flex;
+            gap: 30px;
+            margin-top: 15px;
+            position: relative;
+            border-top: 1px solid #2D2D2D;
+            padding-top: 15px;
+        }
+        .post-actions i {
+            color: #888;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .post-actions i:hover {
+            color: #D4AF37;
+        }
+        .post-actions .active-reaction {
+            color: #D4AF37;
+        }
+        .reaction-menu {
+            display: none;
+            position: absolute;
+            background: #2D2D2D;
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            top: -50px;
+            left: 0;
+            gap: 10px;
+            white-space: nowrap;
+            border: 1px solid #D4AF37;
+        }
+        .reaction-menu span {
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin: 0 5px;
+            transition: transform 0.3s ease;
+        }
+        .reaction-menu span:hover {
+            transform: scale(1.3);
+        }
+        .reaction-icons {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        .reaction-icons span {
+            font-size: 1.2rem;
+        }
+        .reaction-count {
+            cursor: pointer;
+            color: #D4AF37;
+            font-size: 0.9rem;
+        }
+        .comment-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #2D2D2D;
+            display: none;
+        }
+        .comment-section.active { display: block; }
+        .comment-input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .comment-input {
+            background: #2D2D2D;
+            border: 1px solid #3D3D3D;
+            border-radius: 15px;
+            padding: 10px 15px;
+            color: #e0e0e0;
+            width: 100%;
+            font-size: 1rem;
+            flex-grow: 1;
+        }
+        .comment-input:focus {
+            outline: none;
+            border-color: #D4AF37;
+            background: #3D3D3D;
+        }
+        .comment-image-preview {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 5px;
+            margin-top: 5px;
+            display: none;
+        }
+        .comment {
+            background: #2D2D2D;
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin-top: 10px;
+            font-size: 0.95rem;
+            border: 1px solid #3D3D3D;
+        }
+        .comment:hover {
+            border-color: #D4AF37;
+        }
+        .comment-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 5px;
+            margin-top: 5px;
+            cursor: pointer;
+        }
+        .comment .comment-user {
+            color: #D4AF37;
+            font-weight: 500;
+        }
+        .comment .comment-time {
+            display: block;
+            color: #888;
+            font-size: 0.8rem;
+        }
+        .post-btn {
+            background: #D4AF37;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            color: #121212;
+            font-weight: 600;
+            font-size: 1rem;
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        .post-btn:hover {
+            transform: scale(1.1);
+            background: #C0C0C0;
+            color: #121212;
+        }
+        .modal-content {
+            background: #1E1E1E;
+            border: 1px solid #D4AF37;
+            border-radius: 10px;
+            color: #e0e0e0;
+        }
+        .modal-header, .modal-footer {
+            border-color: #2D2D2D;
+        }
+        .modal-title {
+            color: #D4AF37;
+            font-family: 'Playfair Display', serif;
+        }
+        .modal-body input, .modal-body textarea, .modal-body select {
+            background: #2D2D2D;
+            border: 1px solid #3D3D3D;
+            color: #e0e0e0;
+            border-radius: 10px;
+            padding: 10px 15px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        .modal-body input:focus, .modal-body textarea:focus, .modal-body select:focus {
+            outline: none;
+            border-color: #D4AF37;
+            background: #3D3D3D;
+        }
+        .btn-close {
+            filter: invert(1);
+        }
+        .modal-footer .btn-primary {
+            background: #D4AF37;
+            color: #121212;
+            border: none;
+            font-weight: 600;
+        }
+        .modal-footer .btn-secondary {
+            background: #3D3D3D;
+            color: #e0e0e0;
+            border: none;
+        }
+        .auth-btn {
+            background: #D4AF37;
+            color: #121212;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        .auth-btn:hover {
+            transform: scale(1.05);
+            background: #C0C0C0;
+            color: #121212;
+        }
+        .delete-btn, .report-btn {
+            color: #ff6b6b;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .delete-btn:hover, .report-btn:hover {
+            color: #ff4444;
+        }
+        .share-options {
+            display: none;
+            position: absolute;
+            background: #2D2D2D;
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            border: 1px solid #D4AF37;
+        }
+        .share-options a {
+            display: block;
+            color: #e0e0e0;
+            padding: 8px 15px;
+            text-decoration: none;
+            font-size: 1rem;
+            border-radius: 5px;
+        }
+        .share-options a:hover {
+            background: #3D3D3D;
+            color: #D4AF37;
+        }
+        .activity-item, .reaction-item, .report-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #2D2D2D;
+            font-size: 0.95rem;
+        }
+        .image-upload-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .image-upload-preview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            display: none;
+            margin-top: 10px;
+            border: 1px solid #3D3D3D;
+        }
+        .image-upload-btn {
+            background: #2D2D2D;
+            color: #D4AF37;
+            border: 1px dashed #3D3D3D;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+        .image-upload-btn:hover {
+            border-color: #D4AF37;
+            background: #3D3D3D;
+        }
+        .remove-image-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            display: none;
+        }
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow: auto;
+        }
+        .image-modal-content {
+            display: block;
+            margin: auto;
+            max-width: 90%;
+            max-height: 90%;
+            margin-top: 5%;
+        }
+        .close-image-modal {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #D4AF37;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .close-image-modal:hover {
+            color: #C0C0C0;
+        }
+        .comment-image-btn {
+            background: transparent;
+            border: none;
+            color: #D4AF37;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        @media (max-width: 576px) {
+            .navbar { padding: 10px 15px; }
+            .navbar h5 { font-size: 1.5rem; }
+            .nav-tabs .nav-link { padding: 6px 15px; font-size: 0.9rem; }
+            .profile-icon { width: 35px; height: 35px; font-size: 1rem; }
+            .auth-btn { padding: 8px 15px; font-size: 0.9rem; }
+            .search-bar { max-width: 100%; margin: 10px 15px; }
+            .search-bar input { padding: 8px 35px 8px 15px; font-size: 0.9rem; }
+            .search-results { max-height: 250px; }
+            .search-result-item { padding: 8px 12px; font-size: 0.9rem; }
+            .post { padding: 15px; margin-bottom: 15px; }
+            .user-initial, .user-avatar { width: 40px; height: 40px; font-size: 1.2rem; margin-right: 10px; }
+            .username { font-size: 1.1rem; }
+            .time-ago { font-size: 0.8rem; }
+            .post-title { font-size: 1.3rem; }
+            .post-content { font-size: 1rem; }
+            .post-type { font-size: 0.8rem; padding: 4px 10px; }
+            .post-actions i { font-size: 1.1rem; }
+            .reaction-menu { top: -45px; }
+            .reaction-menu span { font-size: 1.1rem; }
+            .comment-input { padding: 8px 12px; font-size: 0.9rem; }
+            .comment { padding: 8px 12px; font-size: 0.85rem; }
+            .post-btn { padding: 12px 25px; font-size: 0.9rem; bottom: 20px; right: 20px; }
+            .image-upload-preview { max-height: 200px; }
+            .comment-image { max-width: 150px; max-height: 150px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
+            <h5>CSE Community</h5>
+            <div class="d-flex align-items-center gap-3">
+                <button id="authButton" class="auth-btn">Sign In</button>
+                <div id="profileIcon" class="profile-icon" style="display: none;" data-bs-toggle="modal" data-bs-target="#profileModal"></div>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search by title, content, user, or blood group...">
+                <i class="bi bi-search"></i>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+            <ul class="nav nav-tabs mt-3">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" data-tab="all">All <span id="allCount" class="badge"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-tab="feed">Feed <span id="feedCount" class="badge"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-tab="announcement">Announcement <span id="announcementCount" class="badge"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-tab="question">Question <span id="questionCount" class="badge"></span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Posts Container -->
+    <div class="container mt-4" id="posts-container">
+        <!-- Posts will be dynamically loaded here -->
+    </div>
+
+    <!-- Post Button -->
+    <button id="postButton" class="post-btn" style="display: none;" data-bs-toggle="modal" data-bs-target="#postModal"><i class="bi bi-plus-lg"></i> Post</button>
+
+    <!-- Post Modal -->
+    <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="postModalLabel">Create a Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="postTitle" class="form-control mb-3" placeholder="Post Title (Required)">
+                    <select id="postType" class="form-select mb-3">
+                        <option value="feed">Feed</option>
+                        <option value="announcement">Announcement</option>
+                        <option value="question">Question</option>
+                    </select>
+                    <div class="image-upload-container">
+                        <label for="postImageUpload" class="image-upload-btn">
+                            <i class="bi bi-image"></i> Add Image (Optional)
+                        </label>
+                        <input type="file" id="postImageUpload" accept="image/*" style="display: none;">
+                        <img id="postImagePreview" class="image-upload-preview">
+                        <button id="removePostImage" class="remove-image-btn"><i class="bi bi-x"></i></button>
+                    </div>
+                    <textarea class="form-control" id="postContent" rows="5" placeholder="What's on your mind?"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="submitPost">Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal fade profile-modal" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalLabel">Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="image-upload-container" style="margin: 0 auto 20px; max-width: 200px;">
+                        <label for="profilePhotoUpload" style="cursor: pointer;">
+                            <img id="profilePhoto" class="rounded-circle mb-2" style="width: 100px; height: 100px; object-fit: cover; border: 2px solid #D4AF37;" alt="Profile Photo">
+                            <div class="text-center mt-2 gold-text"><small>Click to change</small></div>
+                        </label>
+                        <input type="file" id="profilePhotoUpload" accept="image/*" style="display: none;">
+                    </div>
+                    <h5 id="profileName" class="gold-text"></h5>
+                    <p id="profileEmail" class="silver-text"></p>
+                    <input type="text" id="profileUsername" class="form-control mb-3" placeholder="Update username">
+                    <select id="profileBloodGroup" class="form-select mb-3" required>
+                        <option value="" disabled selected>Select Blood Group (Required)</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                    <textarea id="profileNotebook" class="form-control mb-3" placeholder="Your Notebook" rows="3"></textarea>
+                    <button class="btn btn-primary mb-3 w-100" id="saveProfile">Save Profile</button>
+                    <button class="btn btn-primary mb-3 w-100" id="activityLogButton" data-bs-toggle="modal" data-bs-target="#activityModal">Activity Log</button>
+                    <button class="btn btn-primary w-100" id="signOutButton">Sign Out</button>
+                    <div id="userPosts" class="mt-4">
+                        <h6 class="gold-text text-start">Your Posts</h6>
+                        <div id="userPostsList" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Public Profile Modal -->
+    <div class="modal fade" id="publicProfileModal" tabindex="-1" aria-labelledby="publicProfileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="publicProfileModalLabel">User Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="publicProfilePhoto" class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover; border: 2px solid #D4AF37;" alt="Profile Photo">
+                    <h5 id="publicProfileName" class="gold-text"></h5>
+                    <p id="publicProfileBloodGroup" class="silver-text"></p>
+                    <div class="mt-4">
+                        <h6 class="gold-text text-start">Recent Posts</h6>
+                        <div id="publicUserPostsList" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Log Modal -->
+    <div class="modal fade" id="activityModal" tabindex="-1" aria-labelledby="activityModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="activityModalLabel">Activity Log</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="activityLogContent">
+                    <!-- Activity log will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Modal -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">Notification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="notificationMessage">
+                    <!-- Notification message will be shown here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reaction Details Modal -->
+    <div class="modal fade" id="reactionModal" tabindex="-1" aria-labelledby="reactionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reactionModalLabel">Reactions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="reactionDetails">
+                    <!-- Reaction details will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Modal -->
+    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reportModalLabel">Report Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea id="reportReason" class="form-control mb-3" placeholder="Reason for reporting..." rows="3"></textarea>
+                    <div id="reportList"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="submitReport">Submit Report</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal">
+        <span class="close-image-modal">&times;</span>
+        <img class="image-modal-content" id="modalImage">
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Import Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, push, onValue, set, remove, update, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+        // Cloudinary Configuration
+        const cloudName = "dvhsit2uy";
+        const uploadPreset = "Chating_app";
+        const watermarkPublicId = "Remove_background_project_3_brxjuo";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDmJIWV2HSabLzgf7l6mJ4zdQaZVmckXdE",
+            authDomain: "social-community-de517.firebaseapp.com",
+            projectId: "social-community-de517",
+            storageBucket: "social-community-de517.appspot.com",
+            messagingSenderId: "312580712536",
+            appId: "1:312580712536:web:97c72be99dfec888aa022d",
+            measurementId: "G-993HCEY87H"
+        };
+
+        // Initialize Firebase
+        let app, auth, db, storage;
+        try {
+            app = initializeApp(firebaseConfig);
+            getAnalytics(app);
+            auth = getAuth(app);
+            db = getDatabase(app);
+            storage = getStorage(app);
+            console.log("Firebase initialized successfully");
+        } catch (error) {
+            console.error("Firebase initialization failed:", error);
+            showNotification("Failed to initialize Firebase. Check console for details.");
+        }
+
+        const provider = new GoogleAuthProvider();
+
+        // DOM Elements
+        const authButton = document.getElementById('authButton');
+        const profileIcon = document.getElementById('profileIcon');
+        const postButton = document.getElementById('postButton');
+        const postsContainer = document.getElementById('posts-container');
+        const submitPost = document.getElementById('submitPost');
+        const postTitle = document.getElementById('postTitle');
+        const postContent = document.getElementById('postContent');
+        const postType = document.getElementById('postType');
+        const postImageUpload = document.getElementById('postImageUpload');
+        const postImagePreview = document.getElementById('postImagePreview');
+        const removePostImage = document.getElementById('removePostImage');
+        const profilePhoto = document.getElementById('profilePhoto');
+        const profilePhotoUpload = document.getElementById('profilePhotoUpload');
+        const profileName = document.getElementById('profileName');
+        const profileEmail = document.getElementById('profileEmail');
+        const profileUsername = document.getElementById('profileUsername');
+        const profileBloodGroup = document.getElementById('profileBloodGroup');
+        const profileNotebook = document.getElementById('profileNotebook');
+        const saveProfile = document.getElementById('saveProfile');
+        const signOutButton = document.getElementById('signOutButton');
+        const activityLogButton = document.getElementById('activityLogButton');
+        const activityLogContent = document.getElementById('activityLogContent');
+        const userPostsList = document.getElementById('userPostsList');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        const notificationModal = new bootstrap.Modal(document.getElementById('notificationModal'));
+        const notificationMessage = document.getElementById('notificationMessage');
+        const reactionModal = new bootstrap.Modal(document.getElementById('reactionModal'));
+        const reactionDetails = document.getElementById('reactionDetails');
+        const reportModal = new bootstrap.Modal(document.getElementById('reportModal'));
+        const reportReason = document.getElementById('reportReason');
+        const reportList = document.getElementById('reportList');
+        const submitReport = document.getElementById('submitReport');
+        const publicProfileModal = new bootstrap.Modal(document.getElementById('publicProfileModal'));
+        const publicProfilePhoto = document.getElementById('publicProfilePhoto');
+        const publicProfileName = document.getElementById('publicProfileName');
+        const publicProfileBloodGroup = document.getElementById('publicProfileBloodGroup');
+        const publicUserPostsList = document.getElementById('publicUserPostsList');
+        const allCount = document.getElementById('allCount');
+        const feedCount = document.getElementById('feedCount');
+        const announcementCount = document.getElementById('announcementCount');
+        const questionCount = document.getElementById('questionCount');
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const closeImageModal = document.querySelector('.close-image-modal');
+
+        // Global Variables
+        let currentUser = null;
+        let allPosts = [];
+        let allUsers = [];
+        let activityLog = [];
+        let currentPostId = null;
+        let reactionMenuListener = null;
+        let shareOptionsListener = null;
+        let searchResultsListener = null;
+        let seenPosts = new Set();
+        let postCounts = { all: 0, feed: 0, announcement: 0, question: 0 };
+        let unseenCounts = { feed: 0, announcement: 0, question: 0 };
+        let postImageFile = null;
+        let profileImageFile = null;
+        let commentImageFiles = {};
+
+        // Close All Modals
+        function closeAllModals() {
+            const modals = ['postModal', 'profileModal', 'publicProfileModal', 'activityModal', 'notificationModal', 'reactionModal', 'reportModal'];
+            modals.forEach(modalId => {
+                const modalInstance = bootstrap.Modal.getInstance(document.getElementById(modalId));
+                if (modalInstance) modalInstance.hide();
+            });
+        }
+
+        // Authentication State Listener
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                authButton.style.display = 'none';
+                profileIcon.style.display = 'flex';
+                postButton.style.display = 'block';
+                profileIcon.textContent = user.displayName?.charAt(0).toUpperCase() || 'U';
+                profilePhoto.src = user.photoURL || 'https://via.placeholder.com/100?text=User';
+                profileName.textContent = user.displayName || 'User';
+                profileEmail.textContent = user.email || '';
+                console.log("User signed in:", user.uid);
+                loadUserProfile(user.uid);
+                loadAllUsers();
+                loadSeenPosts(user.uid);
+                checkSharedPost();
+            } else {
+                currentUser = null;
+                authButton.style.display = 'block';
+                profileIcon.style.display = 'none';
+                postButton.style.display = 'none';
+                postsContainer.innerHTML = '<p class="text-center">Please sign in to view posts.</p>';
+                seenPosts.clear();
+                updatePostCounts();
+                console.log("User signed out");
+            }
+        });
+
+        // Sign In with Google
+        authButton.addEventListener('click', async () => {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                const userRef = ref(db, `users/${user.uid}`);
+                await set(userRef, {
+                    username: user.displayName || 'User',
+                    email: user.email || '',
+                    photoURL: user.photoURL || '',
+                    bloodGroup: '',
+                    notebook: '',
+                    createdAt: Date.now(),
+                    activityLog: [],
+                    seenPosts: []
+                });
+                console.log("User profile created in database");
+            } catch (error) {
+                console.error("Sign-in error:", error);
+                showNotification("Error signing in: " + error.message);
+            }
+        });
+
+        // Sign Out
+        signOutButton.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                closeAllModals();
+            } catch (error) {
+                console.error("Sign-out error:", error);
+                showNotification("Error signing out: " + error.message);
+            }
+        });
+
+        // Load User Profile
+        function loadUserProfile(userId) {
+            const userRef = ref(db, `users/${userId}`);
+            onValue(userRef, (snapshot) => {
+                const userData = snapshot.val();
+                if (userData) {
+                    profileUsername.value = userData.username || currentUser?.displayName || 'User';
+                    profileBloodGroup.value = userData.bloodGroup || '';
+                    profileNotebook.value = userData.notebook || '';
+                    activityLog = userData.activityLog || [];
+                    if (userData.photoURL) {
+                        profilePhoto.src = userData.photoURL;
+                    }
+                    loadUserPosts(userId);
+                    console.log("User profile loaded:", userData);
+                } else {
+                    console.warn("No user data found for userId:", userId);
+                    showNotification("No user data found.");
+                }
+            }, (error) => {
+                console.error("Error loading user profile:", error);
+                showNotification("Error loading user profile: " + error.message);
+            });
+        }
+
+        // Load Seen Posts
+        async function loadSeenPosts(userId) {
+            try {
+                const userRef = ref(db, `users/${userId}/seenPosts`);
+                const snapshot = await get(userRef);
+                const seen = snapshot.val() || [];
+                seenPosts = new Set(seen);
+                updatePostCounts();
+            } catch (error) {
+                console.error("Error loading seen posts:", error);
+            }
+        }
+
+        // Save Seen Posts
+        async function saveSeenPosts(userId) {
+            try {
+                const userRef = ref(db, `users/${userId}`);
+                await update(userRef, { seenPosts: Array.from(seenPosts) });
+            } catch (error) {
+                console.error("Error saving seen posts:", error);
+            }
+        }
+
+        // Load All Users for Search
+        function loadAllUsers() {
+            const usersRef = ref(db, 'users');
+            onValue(usersRef, (snapshot) => {
+                allUsers = [];
+                snapshot.forEach((childSnapshot) => {
+                    const user = childSnapshot.val();
+                    user.id = childSnapshot.key;
+                    allUsers.push(user);
+                });
+                console.log("All users loaded:", allUsers.length);
+            }, { onlyOnce: true }, (error) => {
+                console.error("Error loading users:", error);
+                showNotification("Error loading users: " + error.message);
+            });
+        }
+
+        // Load User's Own Posts in Profile
+        function loadUserPosts(userId) {
+            userPostsList.innerHTML = '';
+            const userPostsList = allPosts.filter(post => post.userId === userId);
+            if (userPostsList.length === 0) {
+                userPostsList.innerHTML = '<p class="text-center">No posts yet.</p>';
+            } else {
+                userPostsList.slice(0, 5).forEach(post => {
+                    const postElement = document.createElement('div');
+                    postElement.classList.add('post', 'mt-3');
+                    postElement.setAttribute('data-id', post.id);
+                    postElement.innerHTML = `
+                        <div class="post-title">${post.title}</div>
+                        <div class="post-content">${post.content.substring(0, 50)}${post.content.length > 50 ? '...' : ''}</div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="time-ago">${formatTimeAgo(post.timestamp)}</span>
+                            <i class="bi bi-trash delete-btn"></i>
+                        </div>
+                    `;
+                    userPostsList.appendChild(postElement);
+
+                    // Delete button in profile
+                    const deleteBtn = postElement.querySelector('.delete-btn');
+                    deleteBtn.addEventListener('click', async () => {
+                        closeAllModals();
+                        notificationMessage.innerHTML = 'Are you sure you want to delete this post?';
+                        notificationModal.show();
+
+                        const okButton = document.querySelector('#notificationModal .btn-primary');
+                        const deleteHandler = async () => {
+                            try {
+                                const postRef = ref(db, `posts/${post.id}`);
+                                await remove(postRef);
+                                await addActivity(`Deleted post: ${post.title}`);
+                                console.log("Post deleted from profile:", post.id);
+                            } catch (error) {
+                                console.error("Error deleting post:", error);
+                                showNotification("Error deleting post: " + error.message);
+                            }
+                            notificationModal.hide();
+                            okButton.removeEventListener('click', deleteHandler);
+                        };
+                        okButton.addEventListener('click', deleteHandler);
+                    });
+                });
+            }
+        }
+
+        // Save Profile
+        saveProfile.addEventListener('click', async () => {
+            const newUsername = profileUsername.value.trim();
+            const newBloodGroup = profileBloodGroup.value;
+            const newNotebook = profileNotebook.value.trim();
+            if (!newUsername) {
+                showNotification('Username cannot be empty!');
+                return;
+            }
+            if (!newBloodGroup) {
+                showNotification('Blood Group is required!');
+                return;
+            }
+
+            try {
+                const updates = {
+                    username: newUsername,
+                    bloodGroup: newBloodGroup,
+                    notebook: newNotebook,
+                    activityLog: activityLog
+                };
+
+                // Upload profile photo if changed
+                if (profileImageFile) {
+                    const photoRef = storageRef(storage, `profile_photos/${currentUser.uid}`);
+                    const snapshot = await uploadBytes(photoRef, profileImageFile);
+                    const photoURL = await getDownloadURL(snapshot.ref);
+                    updates.photoURL = photoURL;
+                    profilePhoto.src = photoURL;
+                }
+
+                const userRef = ref(db, `users/${currentUser.uid}`);
+                await update(userRef, updates);
+                profileName.textContent = newUsername;
+                showNotification('Profile updated successfully!');
+                console.log("Profile updated:", updates);
+                profileImageFile = null;
+            } catch (error) {
+                console.error("Error updating profile:", error);
+                showNotification("Error updating profile: " + error.message);
+            }
+        });
+
+        // Profile Photo Upload
+        profilePhotoUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                profileImageFile = file;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    profilePhoto.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Post Image Upload
+        postImageUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                postImageFile = file;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    postImagePreview.src = event.target.result;
+                    postImagePreview.style.display = 'block';
+                    removePostImage.style.display = 'flex';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Remove Post Image
+        removePostImage.addEventListener('click', () => {
+            postImageFile = null;
+            postImagePreview.src = '';
+            postImagePreview.style.display = 'none';
+            removePostImage.style.display = 'none';
+            postImageUpload.value = '';
+        });
+
+        // Activity Log
+        activityLogButton.addEventListener('click', () => {
+            closeAllModals();
+            activityLogContent.innerHTML = '';
+            if (activityLog.length === 0) {
+                activityLogContent.innerHTML = '<p class="text-center">No activity yet.</p>';
+            } else {
+                activityLog.sort((a, b) => b.timestamp - a.timestamp);
+                activityLog.forEach(activity => {
+                    const activityItem = document.createElement('div');
+                    activityItem.classList.add('activity-item');
+                    const timeAgo = formatTimeAgo(activity.timestamp);
+                    activityItem.innerHTML = `<span>${activity.message}</span> <span class="time-ago">${timeAgo}</span>`;
+                    activityLogContent.appendChild(activityItem);
+                });
+            }
+        });
+
+        // Add Activity to Log
+        async function addActivity(message) {
+            const activity = {
+                message: message,
+                timestamp: Date.now()
+            };
+            activityLog.push(activity);
+            try {
+                const userRef = ref(db, `users/${currentUser.uid}`);
+                await update(userRef, { activityLog });
+                console.log("Activity logged:", message);
+            } catch (error) {
+                console.error("Error logging activity:", error);
+            }
+        }
+
+        // Create a New Post
+        submitPost.addEventListener('click', async () => {
+            const title = postTitle.value.trim();
+            const content = postContent.value.trim();
+            const type = postType.value;
+            if (!title) {
+                showNotification('Post title is required!');
+                return;
+            }
+            if (!content) {
+                showNotification('Please enter some content for your post!');
+                return;
+            }
+            if (!currentUser) {
+                showNotification('You must be signed in to post!');
+                return;
+            }
+
+            try {
+                const postsRef = ref(db, 'posts');
+                const newPostRef = push(postsRef);
+                
+                let imageURL = '';
+                if (postImageFile) {
+                    const imageRef = storageRef(storage, `post_images/${newPostRef.key}`);
+                    const snapshot = await uploadBytes(imageRef, postImageFile);
+                    imageURL = await getDownloadURL(snapshot.ref);
+                }
+
+                const postData = {
+                    userId: currentUser.uid,
+                    username: profileUsername.value || currentUser.displayName || 'User',
+                    userPhoto: currentUser.photoURL || '',
+                    title: title,
+                    content: content,
+                    type: type,
+                    timestamp: Date.now(),
+                    reactions: { sad: 0, dislike: 0, celebrate: 0, support: 0, insightful: 0 },
+                    userReactions: {},
+                    reports: {}
+                };
+
+                if (imageURL) {
+                    postData.imageURL = imageURL;
+                }
+
+                await set(newPostRef, postData);
+                closeAllModals();
+                postTitle.value = '';
+                postContent.value = '';
+                postImagePreview.src = '';
+                postImagePreview.style.display = 'none';
+                removePostImage.style.display = 'none';
+                postImageUpload.value = '';
+                postImageFile = null;
+                
+                await addActivity(`Posted: ${title}`);
+                console.log("Post created successfully:", postData);
+            } catch (error) {
+                console.error("Error creating post:", error);
+                showNotification("Error creating post: " + error.message);
+            }
+        });
+
+        // Update Post Counts and Unseen Notifications
+        function updatePostCounts() {
+            postCounts = { all: 0, feed: 0, announcement: 0, question: 0 };
+            unseenCounts = { feed: 0, announcement: 0, question: 0 };
+
+            allPosts.forEach(post => {
+                postCounts.all++;
+                postCounts[post.type]++;
+                if (currentUser && !seenPosts.has(post.id)) {
+                    unseenCounts[post.type]++;
+                }
+            });
+
+            allCount.textContent = postCounts.all > 0 ? `(${postCounts.all})` : '';
+            feedCount.textContent = postCounts.feed > 0 ? `(${postCounts.feed})` : '';
+            announcementCount.textContent = postCounts.announcement > 0 ? `(${postCounts.announcement})` : '';
+            questionCount.textContent = postCounts.question > 0 ? `(${postCounts.question})` : '';
+
+            document.querySelectorAll('.nav-link').forEach(tab => {
+                const tabType = tab.getAttribute('data-tab');
+                const unseenSpan = tab.querySelector('.unseen-count');
+                if (unseenSpan) unseenSpan.remove();
+                if (tabType !== 'all' && unseenCounts[tabType] > 0) {
+                    const unseenBadge = document.createElement('span');
+                    unseenBadge.classList.add('unseen-count');
+                    unseenBadge.textContent = unseenCounts[tabType];
+                    tab.appendChild(unseenBadge);
+                }
+            });
+        }
+
+        // Load Posts from Firebase
+        function loadPosts(filterType = 'all') {
+            const postsRef = ref(db, 'posts');
+            onValue(postsRef, (snapshot) => {
+                postsContainer.innerHTML = '';
+                allPosts = [];
+                snapshot.forEach((childSnapshot) => {
+                    const post = childSnapshot.val();
+                    post.id = childSnapshot.key;
+                    allPosts.push(post);
+                });
+
+                allPosts.sort((a, b) => b.timestamp - a.timestamp);
+
+                allPosts.forEach((post) => {
+                    if (filterType === 'all' || post.type === filterType) {
+                        const postElement = createPostElement(post);
+                        postsContainer.appendChild(postElement);
+                        if (currentUser && !seenPosts.has(post.id)) {
+                            seenPosts.add(post.id);
+                            saveSeenPosts(currentUser.uid);
+                        }
+                    }
+                });
+                updatePostCounts();
+                console.log("Posts loaded:", allPosts.length);
+            }, (error) => {
+                console.error("Error loading posts:", error);
+                postsContainer.innerHTML = '<p class="text-center">Error loading posts. Check console for details.</p>';
+            });
+        }
+
+        // Load Single Post for Shared Link
+        function loadSinglePost(postId) {
+            const post = allPosts.find(p => p.id === postId);
+            if (post) {
+                postsContainer.innerHTML = '';
+                const postElement = createPostElement(post);
+                postsContainer.appendChild(postElement);
+                if (currentUser && !seenPosts.has(post.id)) {
+                    seenPosts.add(post.id);
+                    saveSeenPosts(currentUser.uid);
+                }
+            } else {
+                postsContainer.innerHTML = '<p class="text-center">Post not found.</p>';
+                console.warn("Shared post not found:", postId);
+            }
+        }
+
+        // Create Post Element
+        function createPostElement(post) {
+            const postDiv = document.createElement('div');
+            postDiv.classList.add('post');
+            postDiv.setAttribute('data-id', post.id);
+
+            const timeAgo = formatTimeAgo(post.timestamp);
+            const initial = post.username.charAt(0).toUpperCase();
+            const commentCount = post.comments ? Object.keys(post.comments).length : 0;
+            const isOwnPost = currentUser && post.userId === currentUser.uid;
+            const userReactions = post.userReactions || {};
+            const currentUserReaction = userReactions[currentUser?.uid] || '';
+            const reactionCounts = post.reactions || { sad: 0, dislike: 0, celebrate: 0, support: 0, insightful: 0 };
+            const totalReactions = Object.values(reactionCounts).reduce((a, b) => a + b, 0);
+            const reactedIcons = [];
+            if (reactionCounts.sad > 0) reactedIcons.push('<span>😢</span>');
+            if (reactionCounts.dislike > 0) reactedIcons.push('<span>👎</span>');
+            if (reactionCounts.celebrate > 0) reactedIcons.push('<span>🎉</span>');
+            if (reactionCounts.support > 0) reactedIcons.push('<span>🤝</span>');
+            if (reactionCounts.insightful > 0) reactedIcons.push('<span>💡</span>');
+
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            const formattedContent = post.content.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
+
+            postDiv.innerHTML = `
+                <div class="d-flex align-items-start position-relative">
+                    ${post.userPhoto ? 
+                        `<img src="${post.userPhoto}" class="user-avatar" alt="${post.username}">` : 
+                        `<div class="user-initial">${initial}</div>`
+                    }
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <span class="username" data-user-id="${post.userId}">${post.username}</span>
+                                <span class="time-ago">${timeAgo}</span>
+                            </div>
+                            ${isOwnPost ? `<i class="bi bi-trash delete-btn"></i>` : ''}
+                        </div>
+                        <div class="post-title">${post.title}</div>
+                        <div class="post-content">${formattedContent}</div>
+                        ${post.imageURL ? `<img src="${post.imageURL}" class="post-image" alt="Post image">` : ''}
+                        <div class="post-actions">
+                            <span class="reaction-btn">
+                                <i class="bi ${getReactionIcon(currentUserReaction)} ${currentUserReaction ? 'active-reaction' : ''}"></i>
+                                <span class="reaction-icons">${reactedIcons.join(' ')}</span>
+                                <span class="reaction-count">${totalReactions > 0 ? `(${totalReactions})` : ''}</span>
+                            </span>
+                            <div class="reaction-menu" id="reactionMenu-${post.id}">
+                                <span title="Sad" data-reaction="sad">😢</span>
+                                <span title="Dislike" data-reaction="dislike">👎</span>
+                                <span title="Celebrate" data-reaction="celebrate">🎉</span>
+                                <span title="Support" data-reaction="support">🤝</span>
+                                <span title="Insightful" data-reaction="insightful">💡</span>
+                            </div>
+                            <span class="comment-btn"><i class="bi bi-chat"></i> <span class="comment-count">${commentCount}</span></span>
+                            <span class="report-btn"><i class="bi bi-flag"></i></span>
+                            <span class="share-btn"><i class="bi bi-share"></i></span>
+                            <div class="share-options" id="shareOptions-${post.id}">
+                                <a href="#" data-platform="twitter">Twitter</a>
+                                <a href="#" data-platform="facebook">Facebook</a>
+                                <a href="#" data-platform="whatsapp">WhatsApp</a>
+                                <a href="#" data-platform="copy">Copy Link</a>
+                            </div>
+                        </div>
+                        <div class="comment-section">
+                            <div class="comment-input-container">
+                                <input type="text" class="comment-input" placeholder="Write a comment...">
+                                <button class="comment-image-btn" data-post-id="${post.id}"><i class="bi bi-image"></i></button>
+                                <input type="file" id="commentImageUpload-${post.id}" accept="image/*" style="display: none;">
+                            </div>
+                            <img id="commentImagePreview-${post.id}" class="comment-image-preview">
+                            <div class="comments-list"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-type">${post.type.charAt(0).toUpperCase() + post.type.slice(1)}</div>
+            `;
+
+            // Load comments
+            if (post.comments) {
+                const commentsList = postDiv.querySelector('.comments-list');
+                Object.entries(post.comments).forEach(([commentId, comment]) => {
+                    const commentElement = document.createElement('div');
+                    commentElement.classList.add('comment');
+                    commentElement.setAttribute('data-comment-id', commentId);
+                    const commentTime = formatTimeAgo(comment.timestamp);
+                    commentElement.innerHTML = `
+                        <span class="comment-user">${comment.username}</span>
+                        <span>: ${comment.content}</span>
+                        ${comment.imageURL ? `<img src="${comment.imageURL}" class="comment-image" alt="Comment image">` : ''}
+                        <span class="comment-time">${commentTime}</span>
+                    `;
+                    commentsList.appendChild(commentElement);
+                });
+            }
+
+            // Attach event listeners to post images
+            const postImage = postDiv.querySelector('.post-image');
+            if (postImage) {
+                postImage.addEventListener('click', () => {
+                    modalImage.src = postImage.src;
+                    imageModal.style.display = 'block';
+                });
+            }
+
+            // Attach event listeners to comment images
+            const commentImages = postDiv.querySelectorAll('.comment-image');
+            commentImages.forEach(img => {
+                img.addEventListener('click', () => {
+                    modalImage.src = img.src;
+                    imageModal.style.display = 'block';
+                });
+            });
+
+            attachPostEventListeners(postDiv);
+            return postDiv;
+        }
+
+        // Close image modal
+        closeImageModal.addEventListener('click', () => {
+            imageModal.style.display = 'none';
+        });
+
+        // Close image modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === imageModal) {
+                imageModal.style.display = 'none';
+            }
+        });
+
+        // Get Reaction Icon
+        function getReactionIcon(reaction) {
+            switch (reaction) {
+                case 'sad': return 'bi-emoji-frown-fill';
+                case 'dislike': return 'bi-hand-thumbs-down-fill';
+                case 'celebrate': return 'bi-balloon-fill';
+                case 'support': return 'bi-heart-fill';
+                case 'insightful': return 'bi-lightbulb-fill';
+                default: return 'bi-emoji-frown';
+            }
+        }
+
+        // Get Reaction Emoji
+        function getReactionEmoji(reaction) {
+            switch (reaction) {
+                case 'sad': return '😢';
+                case 'dislike': return '👎';
+                case 'celebrate': return '🎉';
+                case 'support': return '🤝';
+                case 'insightful': return '💡';
+                default: return '';
+            }
+        }
+
+        // Attach Event Listeners to Post
+        function attachPostEventListeners(post) {
+            const postId = post.getAttribute('data-id');
+            const postData = allPosts.find(p => p.id === postId);
+
+            // Username click to view profile
+            const username = post.querySelector('.username');
+            const userId = username.getAttribute('data-user-id');
+            const usernameClickHandler = () => {
+                closeAllModals();
+                if (currentUser && userId === currentUser.uid) {
+                    const profileModal = new bootstrap.Modal(document.getElementById('profileModal'));
+                    profileModal.show();
+                } else {
+                    const userData = allUsers.find(user => user.id === userId);
+                    if (userData) {
+                        publicProfilePhoto.src = userData.photoURL || 'https://via.placeholder.com/100?text=User';
+                        publicProfileName.textContent = userData.username;
+                        publicProfileBloodGroup.textContent = userData.bloodGroup ? `Blood Group: ${userData.bloodGroup}` : 'Blood Group: Not specified';
+                        
+                        // Load user's recent posts
+                        publicUserPostsList.innerHTML = '';
+                        const userPosts = allPosts.filter(p => p.userId === userId).slice(0, 3);
+                        if (userPosts.length === 0) {
+                            publicUserPostsList.innerHTML = '<p class="text-center">No posts yet.</p>';
+                        } else {
+                            userPosts.forEach(p => {
+                                const postElement = document.createElement('div');
+                                postElement.classList.add('post', 'mt-3');
+                                postElement.innerHTML = `
+                                    <div class="post-title">${p.title}</div>
+                                    <div class="post-content">${p.content.substring(0, 50)}${p.content.length > 50 ? '...' : ''}</div>
+                                    <div class="time-ago mt-2">${formatTimeAgo(p.timestamp)}</div>
+                                `;
+                                postElement.addEventListener('click', () => {
+                                    publicProfileModal.hide();
+                                    postsContainer.innerHTML = '';
+                                    const singlePostElement = createPostElement(p);
+                                    postsContainer.appendChild(singlePostElement);
+                                });
+                                publicUserPostsList.appendChild(postElement);
+                            });
+                        }
+                        
+                        publicProfileModal.show();
+                    }
+                }
+            };
+            username.addEventListener('click', usernameClickHandler);
+
+            // Reaction button with tap-and-hold
+            const reactionBtn = post.querySelector('.reaction-btn');
+            const reactionMenu = post.querySelector(`#reactionMenu-${postId}`);
+            let holdTimeout;
+
+            const mouseDownHandler = () => {
+                holdTimeout = setTimeout(() => {
+                    reactionMenu.style.display = 'flex';
+                }, 500);
+            };
+            const mouseUpHandler = () => {
+                clearTimeout(holdTimeout);
+                if (reactionMenu.style.display !== 'flex') {
+                    if (!currentUser) {
+                        showNotification('Please sign in to react to posts!');
+                        return;
+                    }
+                    toggleReaction(postId, postData, 'sad', reactionBtn);
+                }
+            };
+            const touchStartHandler = (e) => {
+                e.preventDefault();
+                holdTimeout = setTimeout(() => {
+                    reactionMenu.style.display = 'flex';
+                }, 500);
+            };
+            const touchEndHandler = (e) => {
+                e.preventDefault();
+                clearTimeout(holdTimeout);
+                if (reactionMenu.style.display !== 'flex') {
+                    if (!currentUser) {
+                        showNotification('Please sign in to react to posts!');
+                        return;
+                    }
+                    toggleReaction(postId, postData, 'sad', reactionBtn);
+                }
+            };
+
+            reactionBtn.addEventListener('mousedown', mouseDownHandler);
+            reactionBtn.addEventListener('mouseup', mouseUpHandler);
+            reactionBtn.addEventListener('touchstart', touchStartHandler);
+            reactionBtn.addEventListener('touchend', touchEndHandler);
+
+            reactionMenu.querySelectorAll('span').forEach(option => {
+                const reactionOptionHandler = () => {
+                    const reaction = option.getAttribute('data-reaction');
+                    if (!currentUser) {
+                        showNotification('Please sign in to react to posts!');
+                        return;
+                    }
+                    toggleReaction(postId, postData, reaction, reactionBtn);
+                    reactionMenu.style.display = 'none';
+                };
+                option.addEventListener('click', reactionOptionHandler);
+            });
+
+            // Hide reaction menu when clicking outside
+            if (reactionMenuListener) {
+                document.removeEventListener('click', reactionMenuListener);
+            }
+            reactionMenuListener = (e) => {
+                if (!reactionBtn.contains(e.target) && !reactionMenu.contains(e.target)) {
+                    reactionMenu.style.display = 'none';
+                }
+            };
+            document.addEventListener('click', reactionMenuListener);
+
+            // Show who reacted
+            const reactionCount = post.querySelector('.reaction-count');
+            const reactionCountHandler = async () => {
+                closeAllModals();
+                const userReactions = postData.userReactions || {};
+                reactionDetails.innerHTML = '';
+                for (const [uid, reaction] of Object.entries(userReactions)) {
+                    try {
+                        const userRef = ref(db, `users/${uid}`);
+                        const userSnapshot = await get(userRef);
+                        const userData = userSnapshot.val();
+                        if (userData) {
+                            const reactionItem = document.createElement('div');
+                            reactionItem.classList.add('reaction-item');
+                            reactionItem.innerHTML = `
+                                <span>${userData.username}</span>
+                                <span>${getReactionEmoji(reaction)}</span>
+                            `;
+                            reactionDetails.appendChild(reactionItem);
+                        }
+                    } catch (error) {
+                        console.error("Error fetching user data for reaction:", error);
+                    }
+                }
+                if (!reactionDetails.innerHTML) {
+                    reactionDetails.innerHTML = '<p class="text-center">No reactions yet.</p>';
+                }
+                reactionModal.show();
+            };
+            if (reactionCount.textContent) {
+                reactionCount.addEventListener('click', reactionCountHandler);
+            }
+
+            // Comment button
+            const commentBtn = post.querySelector('.comment-btn');
+            const commentBtnHandler = () => {
+                const commentSection = post.querySelector('.comment-section');
+                commentSection.classList.toggle('active');
+                if (commentSection.classList.contains('active')) {
+                    commentSection.querySelector('.comment-input').focus();
+                }
+            };
+            commentBtn.addEventListener('click', commentBtnHandler);
+
+            // Comment input
+            const commentInput = post.querySelector('.comment-input');
+            const commentKeypressHandler = async (e) => {
+                if (e.key === 'Enter' && commentInput.value.trim()) {
+                    if (!currentUser) {
+                        showNotification('Please sign in to comment!');
+                        return;
+                    }
+                    
+                    try {
+                        const commentsRef = ref(db, `posts/${postId}/comments`);
+                        const newCommentRef = push(commentsRef);
+                        
+                        let imageURL = '';
+                        const commentImageFile = commentImageFiles[postId];
+                        if (commentImageFile) {
+                            const imageRef = storageRef(storage, `comment_images/${newCommentRef.key}`);
+                            const snapshot = await uploadBytes(imageRef, commentImageFile);
+                            imageURL = await getDownloadURL(snapshot.ref);
+                        }
+
+                        const commentData = {
+                            username: profileUsername.value || currentUser.displayName || 'User',
+                            content: commentInput.value.trim(),
+                            timestamp: Date.now()
+                        };
+
+                        if (imageURL) {
+                            commentData.imageURL = imageURL;
+                        }
+
+                        await set(newCommentRef, commentData);
+                        commentInput.value = '';
+                        const commentImagePreview = post.querySelector(`#commentImagePreview-${postId}`);
+                        commentImagePreview.src = '';
+                        commentImagePreview.style.display = 'none';
+                        delete commentImageFiles[postId];
+                        
+                        await addActivity(`Commented on: ${postData.title}`);
+                        console.log("Comment added:", commentData);
+                    } catch (error) {
+                        console.error("Error adding comment:", error);
+                        showNotification("Error adding comment: " + error.message);
+                    }
+                }
+            };
+            commentInput.addEventListener('keypress', commentKeypressHandler);
+
+            // Comment image upload
+            const commentImageBtn = post.querySelector('.comment-image-btn');
+            const commentImageUpload = post.querySelector(`#commentImageUpload-${postId}`);
+            const commentImagePreview = post.querySelector(`#commentImagePreview-${postId}`);
+
+            commentImageBtn.addEventListener('click', () => {
+                commentImageUpload.click();
+            });
+
+            commentImageUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    commentImageFiles[postId] = file;
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        commentImagePreview.src = event.target.result;
+                        commentImagePreview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Report button
+            const reportBtn = post.querySelector('.report-btn');
+            const reportBtnHandler = async () => {
+                if (!currentUser) {
+                    showNotification('Please sign in to report posts!');
+                    return;
+                }
+                closeAllModals();
+                currentPostId = postId;
+
+                // Check if user has already reported this post
+                const reportsRef = ref(db, `posts/${postId}/reports`);
+                const reportsSnapshot = await get(reportsRef);
+                const reports = reportsSnapshot.val() || {};
+                const userHasReported = Object.values(reports).some(report => report.username === (profileUsername.value || currentUser.displayName || 'User'));
+
+                if (userHasReported) {
+                    showNotification('You have already reported this post!');
+                    return;
+                }
+
+                reportReason.value = '';
+                reportList.innerHTML = '';
+                Object.values(reports).forEach(report => {
+                    const reportItem = document.createElement('div');
+                    reportItem.classList.add('report-item');
+                    const reportTime = formatTimeAgo(report.timestamp);
+                    reportItem.innerHTML = `
+                        <span>${report.username}: ${report.reason}</span>
+                        <span class="time-ago">${reportTime}</span>
+                    `;
+                    reportList.appendChild(reportItem);
+                });
+                if (!reportList.innerHTML) {
+                    reportList.innerHTML = '<p class="text-center">No reports yet.</p>';
+                }
+                reportModal.show();
+            };
+            reportBtn.addEventListener('click', reportBtnHandler);
+
+            // Submit report
+            const submitReportHandler = async () => {
+                const reason = reportReason.value.trim();
+                if (!reason) {
+                    showNotification('Please provide a reason for reporting!');
+                    return;
+                }
+                try {
+                    const reportsRef = ref(db, `posts/${currentPostId}/reports`);
+                    const newReportRef = push(reportsRef);
+                    const reportData = {
+                        username: profileUsername.value || currentUser.displayName || 'User',
+                        reason: reason,
+                        timestamp: Date.now()
+                    };
+                    await set(newReportRef, reportData);
+                    reportModal.hide();
+                    await addActivity(`Reported post: ${postData.title}`);
+                    console.log("Report submitted:", reportData);
+                } catch (error) {
+                    console.error("Error submitting report:", error);
+                    showNotification("Error submitting report: " + error.message);
+                }
+            };
+            submitReport.addEventListener('click', submitReportHandler);
+
+            // Share button
+            const shareBtn = post.querySelector('.share-btn');
+            const shareOptions = post.querySelector(`#shareOptions-${postId}`);
+            const shareBtnHandler = (e) => {
+                e.stopPropagation();
+                const shareUrl = `${window.location.origin}${window.location.pathname}?post=${postId}`;
+                const shareText = `${postData.title}\n${postData.content}\nCheck it out: ${shareUrl}`;
+
+                if (navigator.share) {
+                    navigator.share({
+                        title: postData.title,
+                        text: postData.content,
+                        url: shareUrl
+                    }).then(() => {
+                        console.log("Shared successfully via native share");
+                    }).catch((error) => {
+                        console.error("Error sharing via native share:", error);
+                        showShareOptions();
+                    });
+                } else {
+                    showShareOptions();
+                }
+
+                function showShareOptions() {
+                    shareOptions.style.display = shareOptions.style.display === 'block' ? 'none' : 'block';
+                    shareOptions.style.left = `${shareBtn.offsetLeft}px`;
+                    shareOptions.style.top = `${shareBtn.offsetTop + shareBtn.offsetHeight + 5}px`;
+
+                    shareOptions.querySelectorAll('a').forEach(link => {
+                        const shareLinkHandler = (e) => {
+                            e.preventDefault();
+                            const platform = e.target.getAttribute('data-platform');
+                            let url = '';
+                            switch (platform) {
+                                case 'twitter':
+                                    url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+                                    break;
+                                case 'facebook':
+                                    url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+                                    break;
+                                case 'whatsapp':
+                                    url = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+                                    break;
+                                case 'copy':
+                                    navigator.clipboard.writeText(shareUrl);
+                                    showNotification('Link copied to clipboard!');
+                                    shareOptions.style.display = 'none';
+                                    return;
+                            }
+                            window.open(url, '_blank');
+                            shareOptions.style.display = 'none';
+                        };
+                        link.addEventListener('click', shareLinkHandler);
+                    });
+                }
+            };
+            shareBtn.addEventListener('click', shareBtnHandler);
+
+            // Hide share options when clicking outside
+            if (shareOptionsListener) {
+                document.removeEventListener('click', shareOptionsListener);
+            }
+            shareOptionsListener = (e) => {
+                if (!shareBtn.contains(e.target) && !shareOptions.contains(e.target)) {
+                    shareOptions.style.display = 'none';
+                }
+            };
+            document.addEventListener('click', shareOptionsListener);
+
+            // Delete button
+            const deleteBtn = post.querySelector('.delete-btn');
+            if (deleteBtn) {
+                const deleteBtnHandler = () => {
+                    closeAllModals();
+                    notificationMessage.innerHTML = 'Are you sure you want to delete this post?';
+                    notificationModal.show();
+
+                    const okButton = document.querySelector('#notificationModal .btn-primary');
+                    const deleteHandler = async () => {
+                        try {
+                            // Delete post image if exists
+                            if (postData.imageURL) {
+                                const imageRef = storageRef(storage, `post_images/${postId}`);
+                                await deleteObject(imageRef).catch(error => {
+                                    console.error("Error deleting post image:", error);
+                                });
+                            }
+                            
+                            // Delete all comment images
+                            if (postData.comments) {
+                                for (const commentId in postData.comments) {
+                                    if (postData.comments[commentId].imageURL) {
+                                        const commentImageRef = storageRef(storage, `comment_images/${commentId}`);
+                                        await deleteObject(commentImageRef).catch(error => {
+                                            console.error("Error deleting comment image:", error);
+                                        });
+                                    }
+                                }
+                            }
+                            
+                            const postRef = ref(db, `posts/${postId}`);
+                            await remove(postRef);
+                            await addActivity(`Deleted post: ${postData.title}`);
+                            console.log("Post deleted:", postId);
+                        } catch (error) {
+                            console.error("Error deleting post:", error);
+                            showNotification("Error deleting post: " + error.message);
+                        }
+                        notificationModal.hide();
+                        okButton.removeEventListener('click', deleteHandler);
+                    };
+                    okButton.addEventListener('click', deleteHandler);
+                };
+                deleteBtn.addEventListener('click', deleteBtnHandler);
+            }
+        }
+
+        // Toggle Reaction
+        async function toggleReaction(postId, postData, reaction, reactionBtn) {
+            const reactions = postData.reactions || { sad: 0, dislike: 0, celebrate: 0, support: 0, insightful: 0 };
+            const userReactions = postData.userReactions || {};
+            const currentUserReaction = userReactions[currentUser.uid];
+
+            if (currentUserReaction) {
+                reactions[currentUserReaction] = Math.max(0, (reactions[currentUserReaction] || 0) - 1);
+            }
+            if (currentUserReaction !== reaction) {
+                reactions[reaction] = (reactions[reaction] || 0) + 1;
+                userReactions[currentUser.uid] = reaction;
+            } else {
+                delete userReactions[currentUser.uid];
+            }
+
+            try {
+                const postRef = ref(db, `posts/${postId}`);
+                await update(postRef, { reactions, userReactions });
+                const icon = reactionBtn.querySelector('i');
+                icon.className = `bi ${getReactionIcon(userReactions[currentUser.uid])}`;
+                if (userReactions[currentUser.uid]) {
+                    icon.classList.add('active-reaction');
+                } else {
+                    icon.classList.remove('active-reaction');
+                }
+                const reactedIcons = [];
+                if (reactions.sad > 0) reactedIcons.push('<span>😢</span>');
+                if (reactions.dislike > 0) reactedIcons.push('<span>👎</span>');
+                if (reactions.celebrate > 0) reactedIcons.push('<span>🎉</span>');
+                if (reactions.support > 0) reactedIcons.push('<span>🤝</span>');
+                if (reactions.insightful > 0) reactedIcons.push('<span>💡</span>');
+                reactionBtn.querySelector('.reaction-icons').innerHTML = reactedIcons.join(' ');
+                const totalReactions = Object.values(reactions).reduce((a, b) => a + b, 0);
+                reactionBtn.querySelector('.reaction-count').textContent = totalReactions > 0 ? `(${totalReactions})` : '';
+                await addActivity(`Reacted "${reaction}" to: ${postData.title}`);
+                console.log("Reaction updated:", reactions);
+            } catch (error) {
+                console.error("Error updating reaction:", error);
+                showNotification("Error updating reaction: " + error.message);
+            }
+        }
+
+        // Format Time Ago
+        function formatTimeAgo(timestamp) {
+            const now = Date.now();
+            const seconds = Math.floor((now - timestamp) / 1000);
+            if (seconds < 60) return `${seconds}s ago`;
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes}m ago`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours}h ago`;
+            const days = Math.floor(hours / 24);
+            return `${days}d ago`;
+        }
+
+        // Tab Filtering
+        document.querySelectorAll('.nav-link').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.nav-link').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const filterType = tab.getAttribute('data-tab');
+                loadPosts(filterType);
+            });
+        });
+
+        // Advanced Search Functionality
+        searchInput.addEventListener('input', () => {
+            const queryText = searchInput.value.trim().toLowerCase();
+            searchResults.innerHTML = '';
+            searchResults.style.display = queryText ? 'block' : 'none';
+
+            if (!queryText) return;
+
+            const bloodGroups = ['a+', 'a-', 'b+', 'b-', 'ab+', 'ab-', 'o+', 'o-'];
+            const isBloodGroupSearch = bloodGroups.includes(queryText);
+
+            const displayedPosts = new Set();
+            const displayedUsers = new Set();
+
+            if (isBloodGroupSearch) {
+                const matchingUsers = allUsers.filter(user => user.bloodGroup && user.bloodGroup.toLowerCase() === queryText);
+                if (matchingUsers.length > 0) {
+                    const header = document.createElement('div');
+                    header.classList.add('search-result-item');
+                    header.innerHTML = '<span>Users with Blood Group</span>';
+                    searchResults.appendChild(header);
+
+                    matchingUsers.forEach(user => {
+                        if (displayedUsers.has(user.id)) return;
+                        displayedUsers.add(user.id);
+                        const resultItem = document.createElement('div');
+                        resultItem.classList.add('search-result-item');
+                        resultItem.innerHTML = `${user.username} (${user.bloodGroup})`;
+                        resultItem.addEventListener('click', () => {
+                            postsContainer.innerHTML = '';
+                            const userPosts = allPosts.filter(post => post.userId === user.id);
+                            userPosts.forEach(post => {
+                                const postElement = createPostElement(post);
+                                postsContainer.appendChild(postElement);
+                            });
+                            searchResults.style.display = 'none';
+                            searchInput.value = '';
+                        });
+                        searchResults.appendChild(resultItem);
+                    });
+                }
+            }
+
+            const matchingUsers = allUsers.filter(user => user.username.toLowerCase().includes(queryText));
+            if (matchingUsers.length > 0 && !isBloodGroupSearch) {
+                const header = document.createElement('div');
+                header.classList.add('search-result-item');
+                header.innerHTML = '<span>Users</span>';
+                searchResults.appendChild(header);
+
+                matchingUsers.forEach(user => {
+                    if (displayedUsers.has(user.id)) return;
+                    displayedUsers.add(user.id);
+                    const resultItem = document.createElement('div');
+                    resultItem.classList.add('search-result-item');
+                    resultItem.innerHTML = `${user.username}`;
+                    resultItem.addEventListener('click', () => {
+                        postsContainer.innerHTML = '';
+                        const userPosts = allPosts.filter(post => post.userId === user.id);
+                        userPosts.forEach(post => {
+                            const postElement = createPostElement(post);
+                            postsContainer.appendChild(postElement);
+                        });
+                        searchResults.style.display = 'none';
+                        searchInput.value = '';
+                    });
+                    searchResults.appendChild(resultItem);
+                });
+            }
+
+            const matchingPosts = allPosts.filter(post =>
+                post.title.toLowerCase().includes(queryText) ||
+                post.content.toLowerCase().includes(queryText)
+            ).sort((a, b) => {
+                const aTitleMatch = a.title.toLowerCase().includes(queryText) ? 1 : 0;
+                const bTitleMatch = b.title.toLowerCase().includes(queryText) ? 1 : 0;
+                const aContentMatch = a.content.toLowerCase().includes(queryText) ? 1 : 0;
+                const bContentMatch = b.content.toLowerCase().includes(queryText) ? 1 : 0;
+
+                if (aTitleMatch !== bTitleMatch) return bTitleMatch - aTitleMatch;
+                if (aContentMatch !== bContentMatch) return bContentMatch - aContentMatch;
+                return b.timestamp - a.timestamp;
+            });
+
+            if (matchingPosts.length > 0) {
+                const header = document.createElement('div');
+                header.classList.add('search-result-item');
+                header.innerHTML = '<span>Posts</span>';
+                searchResults.appendChild(header);
+
+                matchingPosts.forEach(post => {
+                    if (displayedPosts.has(post.id)) return;
+                    displayedPosts.add(post.id);
+                    const resultItem = document.createElement('div');
+                    resultItem.classList.add('search-result-item');
+                    const matchSource = post.title.toLowerCase().includes(queryText) ? 'Title' : 'Content';
+                    resultItem.innerHTML = `${matchSource}: ${post.title.substring(0, 30)}... (by ${post.username})`;
+                    resultItem.addEventListener('click', () => {
+                        postsContainer.innerHTML = '';
+                        const postElement = createPostElement(post);
+                        postsContainer.appendChild(postElement);
+                        searchResults.style.display = 'none';
+                        searchInput.value = '';
+                    });
+                    searchResults.appendChild(resultItem);
+                });
+            }
+
+            if (searchResults.children.length === 0) {
+                searchResults.innerHTML = '<div class="search-result-item">No results found</div>';
+            }
+        });
+
+        // Hide search results when clicking outside
+        if (searchResultsListener) {
+            document.removeEventListener('click', searchResultsListener);
+        }
+        searchResultsListener = (e) => {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.style.display = 'none';
+            }
+        };
+        document.addEventListener('click', searchResultsListener);
+
+        // Check for shared post in URL
+        function checkSharedPost() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('post');
+            if (postId) {
+                const postsRef = ref(db, 'posts');
+                onValue(postsRef, (snapshot) => {
+                    allPosts = [];
+                    snapshot.forEach((childSnapshot) => {
+                        const post = childSnapshot.val();
+                        post.id = childSnapshot.key;
+                        allPosts.push(post);
+                    });
+                    loadSinglePost(postId);
+                }, { onlyOnce: true }, (error) => {
+                    console.error("Error loading shared post:", error);
+                    postsContainer.innerHTML = '<p class="text-center">Error loading post.</p>';
+                });
+            } else {
+                loadPosts();
+            }
+        }
+
+        // Show Notification Modal
+        function showNotification(message) {
+            closeAllModals();
+            notificationMessage.textContent = message;
+            notificationModal.show();
+        }
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
